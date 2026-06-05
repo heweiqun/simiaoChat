@@ -1,0 +1,191 @@
+/* ============================================
+   自定义样式覆盖 - 适配群组消息设计图风格
+   内部3x缩放: 40px可见 = 120px内部
+   ============================================ */
+
+/* --- 头像改为圆形 40px (内部120px) --- */
+.item_avatar__JLrle {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 60px !important;
+}
+
+/* --- 消息气泡margin适配圆形头像 --- */
+.item_wrap___yQgx .item_content__oyEnZ {
+  margin-left: 156px !important;
+}
+
+.item_meWrap__t0K11 .item_content__oyEnZ {
+  margin-right: 156px !important;
+}
+
+/* --- 导航栏样式 --- */
+/* 44px可见 = 132px内部 (3x缩放) */
+.navbar_wrap__uhe5Q {
+  background-color: #f7f8fb !important;
+  height: 132px !important;
+}
+
+/* 去掉导航栏底部分割线 */
+.navbar_wrap__uhe5Q:after {
+  display: none !important;
+}
+
+.wechat_title___xt_H .wechat_text__HYrh4 {
+  font-size: 48px !important;
+  font-weight: 600 !important;
+}
+
+/* 返回图标 24px = 72px内部 */
+.wechat_back__0skCh {
+  width: 72px !important;
+  height: 72px !important;
+  background-size: 72px !important;
+}
+
+/* 右侧更多图标 24px = 72px内部, opacity 0.87 */
+.wechat_right__qad56 {
+  width: 72px !important;
+  height: 72px !important;
+  background-size: 72px !important;
+  opacity: 0.87 !important;
+}
+
+/* --- 导航栏“在线”标识 --- */
+.navbar_center__8V1lD {
+  flex-direction: column !important;
+}
+
+.online-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.online-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: #3cf3aa;
+  display: inline-block;
+  margin-right: 8px;
+  margin-top: 7px;
+}
+
+.online-text {
+  font-size: 24px;
+  color: #999999;
+  font-family: PingFang SC, PingFang SC-400;
+  font-weight: 400;
+}
+
+/* --- 聊天区背景 #f7f8fb --- */
+.dialog_list__znkBo {
+  background-color: #f7f8fb !important;
+}
+
+.shot_phone__TdwnZ {
+  background-color: #f7f8fb !important;
+}
+
+.shot_main__9BVb5 {
+  background-color: #f7f8fb !important;
+}
+
+.page_wrap__YawbQ {
+  background-color: #f7f8fb !important;
+}
+
+/* --- 底部输入栏样式 --- */
+/* 54px高度 = 162px内部, 16px padding = 48px内部 */
+.bottom_bar__hA7T4 {
+  background-color: #ffffff !important;
+  height: 162px !important;
+  padding: 0 48px !important;
+}
+
+/* 语音/表情/加号图标 26px = 78px内部 */
+.bottom_bar__hA7T4 span {
+  width: 78px !important;
+  height: 78px !important;
+  background-size: 78px !important;
+}
+
+/* 输入框 237px宽 = 711px内部, 36px高 = 108px内部, 圆角18px = 54px内部 */
+.bottom_bar__hA7T4 .bottom_input__lRJK3 {
+  background: #f7f8fb !important;
+  border-radius: 54px !important;
+  width: 711px !important;
+  height: 108px !important;
+  font-size: 36px !important;
+  font-family: PingFang SC, PingFang SC-400 !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  color: #999999 !important;
+  text-indent: 0 !important;
+  line-height: 108px !important;
+  padding: 0 48px !important;
+  font-style: normal;
+}
+
+/* --- 自己的消息气泡颜色 --- */
+.item_meWrap__t0K11 .item_content__oyEnZ {
+  background: #95ec69 !important;
+}
+
+/* 隐藏自己气泡的三角形指示器 */
+.item_meWrap__t0K11 .item_content__oyEnZ:after {
+  display: none !important;
+}
+
+/* --- 系统通知消息(居中, 白底圆角, 宽度由内容撑开) --- */
+/* line-height 46px = 138px内部, 8px圆角 = 24px内部 */
+.item_wrap___yQgx .item_notice__PooWZ {
+
+
+  color: #999999 !important;
+  font-size: 36px !important;
+  padding: 2px 6px !important;
+  font-family: PingFang SC, PingFang SC-400 !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+  width: auto !important;
+  display: inline-flex !important;
+}
+
+.item_wrap___yQgx .item_notice__PooWZ span {
+  /* line-height: 46px !important; */
+  padding: 6px 18px !important;
+  /* background: #ffffff !important; */
+  border-radius: 24px !important;
+  font-family: PingFang SC, PingFang SC-400;
+  font-weight: 400;
+}
+
+/* --- 聊天字体样式 --- */
+/* 12px可见 = 36px内部 (3x缩放) */
+.item_wrap___yQgx .item_content__oyEnZ {
+  border-radius: 24px !important;
+  min-height: 117px !important;
+  font-size: 48px !important;
+  font-family: PingFang SC, PingFang SC-500 !important;
+  font-weight: 500 !important;
+  color: #121212 !important;
+}
+
+/* 隐藏对方气泡的三角形指示器 */
+.item_wrap___yQgx .item_content__oyEnZ:after {
+  display: none !important;
+}
+
+/* --- 底部home indicator背景统一 --- */
+.bottom_bar__y6lC_ {
+  background-color: #ffffff !important;
+}
+
+/* --- iOS状态栏背景统一 --- */
+.ios_dark__xD2Wv {
+  background-color: #f7f8fb !important;
+}
