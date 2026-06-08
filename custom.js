@@ -12,40 +12,52 @@
   // 如果 basePath 为空（根目录部署），不需要修正
   if (!basePath) return;
 
+  // 核心逻辑：只对尚未包含 basePath 的绝对路径添加前缀
+  // 这样即使 React 重新渲染、DOM 重建，也不会重复添加
+  function prefixPath(url) {
+    // 已经包含 basePath 的不再处理
+    if (url.indexOf(basePath + '/') === 0) return url;
+    // 以 / 开头的绝对路径，加上 basePath
+    if (url.charAt(0) === '/') return basePath + url;
+    return url;
+  }
+
   function fixAbsoluteUrls() {
-    // 修正所有 style 中的 background-image 绝对路径
+    // 修正 background-image 中的绝对路径
     var links = document.querySelectorAll('[style*="background-image"]');
     for (var i = 0; i < links.length; i++) {
       var el = links[i];
-      if (el.dataset._pathFixed) continue; // 已修正过，跳过
       var bg = el.style.backgroundImage;
-      if (!bg) continue;
-      // 匹配 url("/...") 或 url(/...)
-      if (bg.indexOf('url("/') !== -1) {
-        // url("/assets/emoji/...") → url("/simiaoChat/assets/emoji/...")
-        el.style.backgroundImage = bg.replace(/url\("\//g, 'url("' + basePath + '/');
-        el.dataset._pathFixed = '1';
-      } else if (bg.indexOf('url(/') !== -1) {
-        // url(/assets/emoji/...) → url(/simiaoChat/assets/emoji/...)
-        el.style.backgroundImage = bg.replace(/url\(\//g, 'url(' + basePath + '/');
-        el.dataset._pathFixed = '1';
+      if (!bg || bg.indexOf('url(') === -1) continue;
+      // 提取 url() 中的路径，用 prefixPath 判断是否需要修正
+      var newBg = bg.replace(/url\(["']?(\/[^"')]+)["']?\)/g, function(match, urlPath) {
+        var fixed = prefixPath(urlPath);
+        if (fixed !== urlPath) {
+          return match.replace(urlPath, fixed);
+        }
+        return match;
+      });
+      if (newBg !== bg) {
+        el.style.backgroundImage = newBg;
       }
     }
 
-    // 修正所有 img src 绝对路径
+    // 修正 img src 绝对路径
     var imgs = document.querySelectorAll('img[src^="/"]');
     for (var j = 0; j < imgs.length; j++) {
-      if (imgs[j].dataset._pathFixed) continue;
-      imgs[j].src = basePath + imgs[j].getAttribute('src');
-      imgs[j].dataset._pathFixed = '1';
+      var src = imgs[j].getAttribute('src');
+      if (src && src.indexOf(basePath + '/') !== 0) {
+        imgs[j].src = basePath + src;
+      }
     }
 
-    // 修正所有 a[href^="/"] 绝对路径（排除表情元素，它们用 background-image）
+    // 修正 a href 绝对路径
     var anchors = document.querySelectorAll('a[href^="/"]');
     for (var k = 0; k < anchors.length; k++) {
-      if (anchors[k].dataset._pathFixed) continue;
-      anchors[k].href = basePath + anchors[k].getAttribute('href');
-      anchors[k].dataset._pathFixed = '1';
+      var href = anchors[k].getAttribute('href');
+      if (href && href.indexOf(basePath + '/') !== 0) {
+        anchors[k].href = basePath + href;
+      }
     }
   }
 
