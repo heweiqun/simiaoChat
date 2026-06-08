@@ -1,3 +1,56 @@
+// 修正子路径部署下的绝对路径资源引用（表情、图片等）
+(function() {
+  // 检测是否运行在子路径下（如 GitHub Pages 的 /simiaoChat/）
+  // 如果页面 URL 的 pathname 不是 / 开头且长度>1，说明是子路径部署
+  var basePath = (function() {
+    var path = window.location.pathname;
+    // 移除 /index.html 等后缀，获取基础路径
+    var idx = path.lastIndexOf('/');
+    return path.substring(0, idx) || '';
+  })();
+
+  // 如果 basePath 为空（根目录部署），不需要修正
+  if (!basePath) return;
+
+  function fixAbsoluteUrls() {
+    // 修正所有 style 中的 background-image 绝对路径
+    var links = document.querySelectorAll('[style*="background-image"]');
+    for (var i = 0; i < links.length; i++) {
+      var el = links[i];
+      var bg = el.style.backgroundImage;
+      if (bg && bg.indexOf('url("/') === 0) {
+        // url("/assets/emoji/...") → url("/simiaoChat/assets/emoji/...")
+        el.style.backgroundImage = bg.replace('url("/', 'url("' + basePath + '/');
+      }
+    }
+
+    // 修正所有 img src 绝对路径
+    var imgs = document.querySelectorAll('img[src^="/"]');
+    for (var j = 0; j < imgs.length; j++) {
+      imgs[j].src = basePath + imgs[j].getAttribute('src');
+    }
+
+    // 修正所有 a[href^="/"] 绝对路径
+    var anchors = document.querySelectorAll('a[href^="/"]');
+    for (var k = 0; k < anchors.length; k++) {
+      anchors[k].href = basePath + anchors[k].getAttribute('href');
+    }
+  }
+
+  window.addEventListener('load', function() {
+    fixAbsoluteUrls();
+    // 延迟再执行一次，处理 React 动态渲染的内容
+    setTimeout(fixAbsoluteUrls, 1000);
+    setTimeout(fixAbsoluteUrls, 3000);
+  });
+
+  // MutationObserver 持续监听 DOM 变化，修正动态添加的绝对路径
+  var observer = new MutationObserver(function() {
+    fixAbsoluteUrls();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+
 // 输入框占位文字改为"发送信息"
 (function() {
   function fixInputText() {
