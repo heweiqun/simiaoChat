@@ -1136,7 +1136,8 @@
   position: absolute;
   left: 0;
   display: none;
-  top: -210px;
+  /* top: -210px; */
+  top: 120px;
   width: 100%
 }
 
@@ -1193,6 +1194,9 @@
   overflow: hidden;
   background-color: #fff;
   bottom: 20px;
+  /* bottom: 192px; */
+  top: -10px;
+  bottom: auto;
   left: 50%;
   margin-left: -18px;
   border-radius: 5px;

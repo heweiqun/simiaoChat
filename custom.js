@@ -69,10 +69,15 @@
   });
 
   // MutationObserver 持续监听 DOM 变化，修正动态添加的绝对路径
-  var observer = new MutationObserver(function() {
-    fixAbsoluteUrls();
+  // 延迟启动，避免在 React 水合过程中修改 DOM 导致 hydration mismatch 错误
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var observer = new MutationObserver(function() {
+        fixAbsoluteUrls();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }, 2000);
   });
-  observer.observe(document.body, { childList: true, subtree: true });
 })();
 
 // 输入框占位文字改为"发送信息"
@@ -104,6 +109,34 @@
   window.addEventListener('load', function() {
     ensureOnlineStatus();
     setTimeout(ensureOnlineStatus, 2000);
+  });
+})();
+
+// 删除菜单溢出顶部时自动向下弹出
+// 原始项目中，当消息靠近顶部时，JS会添加 popmenu_bottom class，将菜单 top 改为 120px
+// 当前版本混淆代码中缺失此逻辑，在此补回
+(function() {
+  var POPMENU_HEIGHT = 100; // 菜单弹出高度
+
+  function fixPopmenuPosition(popmenu) {
+    var rect = popmenu.getBoundingClientRect();
+    // 找到菜单容器（对话消息滚动区域）
+    var scrollContainer = popmenu.closest('.dialog_list__znkBo') || popmenu.closest('.shot_main__9BVb5');
+    var containerTop = scrollContainer ? scrollContainer.getBoundingClientRect().top : 0;
+    // 消息相对于容器的顶部位置
+    var relativeTop = rect.top - containerTop;
+    if (relativeTop < POPMENU_HEIGHT) {
+      popmenu.classList.add('popmenu_bottom__custom');
+    } else {
+      popmenu.classList.remove('popmenu_bottom__custom');
+    }
+  }
+
+  document.addEventListener('mouseover', function(e) {
+    var popmenu = e.target.closest('.popmenu_wrap__ERWeP');
+    if (popmenu) {
+      fixPopmenuPosition(popmenu);
+    }
   });
 })();
 

@@ -168,7 +168,7 @@
 /* 12px可见 = 36px内部 (3x缩放) */
 .item_wrap___yQgx .item_content__oyEnZ {
   border-radius: 24px !important;
-  min-height: 117px !important;
+  /* min-height: 117px !important; */
   font-size: 48px !important;
   font-family: PingFang SC, PingFang SC-500 !important;
   font-weight: 500 !important;
@@ -188,4 +188,15 @@
 /* --- iOS状态栏背景统一 --- */
 .ios_dark__xD2Wv {
   background-color: #f7f8fb !important;
+}
+
+/* --- 删除菜单溢出顶部时向下弹出 --- */
+.popmenu_wrap__ERWeP .popmenu_content__WszbN {
+  z-index: 100 !important;
+}
+.popmenu_wrap__ERWeP .popmenu_bottom__custom .popmenu_content__WszbN {
+  top: auto !important;
+  bottom: auto !important;
+  position: absolute !important;
+  top: 120px !important;
 }
