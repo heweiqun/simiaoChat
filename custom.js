@@ -17,23 +17,35 @@
     var links = document.querySelectorAll('[style*="background-image"]');
     for (var i = 0; i < links.length; i++) {
       var el = links[i];
+      if (el.dataset._pathFixed) continue; // 已修正过，跳过
       var bg = el.style.backgroundImage;
-      if (bg && bg.indexOf('url("/') === 0) {
+      if (!bg) continue;
+      // 匹配 url("/...") 或 url(/...)
+      if (bg.indexOf('url("/') !== -1) {
         // url("/assets/emoji/...") → url("/simiaoChat/assets/emoji/...")
-        el.style.backgroundImage = bg.replace('url("/', 'url("' + basePath + '/');
+        el.style.backgroundImage = bg.replace(/url\("\//g, 'url("' + basePath + '/');
+        el.dataset._pathFixed = '1';
+      } else if (bg.indexOf('url(/') !== -1) {
+        // url(/assets/emoji/...) → url(/simiaoChat/assets/emoji/...)
+        el.style.backgroundImage = bg.replace(/url\(\//g, 'url(' + basePath + '/');
+        el.dataset._pathFixed = '1';
       }
     }
 
     // 修正所有 img src 绝对路径
     var imgs = document.querySelectorAll('img[src^="/"]');
     for (var j = 0; j < imgs.length; j++) {
+      if (imgs[j].dataset._pathFixed) continue;
       imgs[j].src = basePath + imgs[j].getAttribute('src');
+      imgs[j].dataset._pathFixed = '1';
     }
 
-    // 修正所有 a[href^="/"] 绝对路径
+    // 修正所有 a[href^="/"] 绝对路径（排除表情元素，它们用 background-image）
     var anchors = document.querySelectorAll('a[href^="/"]');
     for (var k = 0; k < anchors.length; k++) {
+      if (anchors[k].dataset._pathFixed) continue;
       anchors[k].href = basePath + anchors[k].getAttribute('href');
+      anchors[k].dataset._pathFixed = '1';
     }
   }
 
