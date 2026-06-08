@@ -4,7 +4,7 @@ param(
     [int]$Port = 8080
 )
 
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = if ($MyInvocation.MyCommand.Path) { Split-Path -Parent $MyInvocation.MyCommand.Path } else { $PWD.Path }
 
 # MIME type mapping
 $mimeTypes = @{
