@@ -200,3 +200,25 @@
   position: absolute !important;
   top: 120px !important;
 }
+/* 原版显示模式：只覆盖聊天区域和左右文字消息，不改变其他消息类型或气泡形状。 */
+.shot_main__9BVb5[data-chat-theme="dark"] {
+  --chat-dark-background: #151924;
+  --chat-dark-left-bubble: #2a2a36;
+  --chat-dark-right-bubble: #748eed;
+  --chat-dark-text: #ffffff;
+}
+
+.shot_main__9BVb5[data-chat-theme="dark"],
+.shot_main__9BVb5[data-chat-theme="dark"] .page_wrap__YawbQ,
+.shot_main__9BVb5[data-chat-theme="dark"] .dialog_list__znkBo {
+  background-color: var(--chat-dark-background) !important;
+}
+
+.shot_main__9BVb5[data-chat-theme="dark"] .item_wrap___yQgx .item_content__oyEnZ:has(> .RichText_wrap__Z9DxZ) {
+  background-color: var(--chat-dark-left-bubble) !important;
+  color: var(--chat-dark-text) !important;
+}
+
+.shot_main__9BVb5[data-chat-theme="dark"] .item_meWrap__t0K11 .item_content__oyEnZ:has(> .RichText_wrap__Z9DxZ) {
+  background-color: var(--chat-dark-right-bubble) !important;
+}

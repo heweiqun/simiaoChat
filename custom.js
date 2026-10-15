@@ -240,3 +240,43 @@
     setTimeout(processAllNotices, 2000);
   });
 })();
+
+// 将原有“显示”面板的模式状态同步到聊天预览；属性随截图节点一起复制。
+(function() {
+  function syncChatTheme() {
+    var rows = document.querySelectorAll('.display_item__kHs8h');
+    var darkSwitch = null;
+    for (var i = 0; i < rows.length; i++) {
+      var label = rows[i].firstElementChild;
+      var control = rows[i].querySelector('[role="switch"]');
+      if (!label || !control) continue;
+      var name = label.textContent.trim();
+      if (name === '浅色模式' || name === '深色模式') {
+        control.setAttribute('aria-label', name);
+      }
+      if (name === '深色模式') darkSwitch = control;
+    }
+    if (!darkSwitch) return;
+    var theme = darkSwitch.getAttribute('aria-checked') === 'true' ? 'dark' : 'light';
+    var previews = document.querySelectorAll('.shot_main__9BVb5');
+    for (var j = 0; j < previews.length; j++) {
+      if (previews[j].getAttribute('data-chat-theme') !== theme) {
+        previews[j].setAttribute('data-chat-theme', theme);
+      }
+    }
+  }
+
+  function startChatThemeSync() {
+    syncChatTheme();
+    // React 更新开关、添加消息或重建预览后，继续沿用当前模式。
+    var observer = new MutationObserver(syncChatTheme);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-checked']
+    });
+  }
+  if (document.readyState === 'complete') startChatThemeSync();
+  else window.addEventListener('load', startChatThemeSync, { once: true });
+})();
